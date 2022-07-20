@@ -1,0 +1,254 @@
+<c-row>
+  <c-col>
+    <c-card class="border-top border-dark border-4">
+      <c-card-header class="text-center h5 bg-dark text-white" >Identificador de Acesso</c-card-header>
+      <c-card-body class="bg-gradient">
+
+        <c-row>
+          <c-col>
+            <c-card class="border-top border-dark">
+              <c-card-body class="bg-gradient">
+
+                <h5 class="card-title"><i>Identificador de Acesso</i></h5>
+                <form form class="identificador" novalidate>
+                  <c-row>
+                    <c-col md="5">  
+                      <c-row>
+                        <c-col md="5">  
+                          <label for="idUsuario" class="form-label">Matrícula</label>
+                          <c-input-group class="mb-3">                        
+                            <input type="text" class="form-control" [maxlength]="11" [(ngModel)]="identificador.idUsuario" name="idUsuario" disabled="true" required autofocus />
+                            <button cButton color="dark" type="button" variant="outline" (click)="limparFormModal()" [cModalToggle]="ModalPerquisa.id">
+                             <svg cIcon name="cil-zoom" size="ms"></svg>
+                            </button>
+                            <div class="invalid-feedback"> 
+                              Preenchimento Obrigatório.
+                            </div>
+                          </c-input-group>                          
+                        </c-col>
+
+                        <c-col md="5">
+                          <div class="mb-3">
+                            <label for="idTipoIdentificador" class="form-label">Tipo Identificador</label>
+                            <select class="form-select mb-3" [(ngModel)]="identificador.idTipoIdentificador" name="idTipoIdentificador" id="idTipoIdentificador" required>
+                              <option *ngFor="let i of tiposIdentificador" [ngValue]="i.idTipoIdentificador">
+                                {{i.nome}}
+                              </option>
+                            </select>
+                            <div class="invalid-feedback invalid-feedback-Select">
+                              Seleção obrigatória.
+                            </div>
+                          </div>
+                        </c-col>      
+                        
+                        <c-col md="1">
+                          <c-form-check class="mb-3" style="margin-top: 40px;">
+                            <input cFormCheckInput  [(ngModel)]="identificador.status" name="status" id="status" type="checkbox" />
+                            <label cFormCheckLabel for="status">Ativo</label>
+                          </c-form-check>
+                        </c-col>
+
+                      </c-row>     
+                     
+                      <c-row>
+                        <c-col>
+                          <div class="mb-3">
+                            <label for="documento" class="form-label">Código do Identificador</label>
+                            <input type="text" [maxlength]="11" class="form-control" [(ngModel)]="identificador.codigodeAcesso" name="codigodeAcesso" id="documento" required>
+                            <div class="invalid-feedback"> 
+                              Preenchimento Obrigatório.
+                            </div>
+                          </div>
+                        </c-col>
+                        <c-col>
+                          <div class="mb-3">
+                            <label for="idGrupo" class="form-label">Grupo de Acessos</label>
+                            <select class="form-select mb-3" id="idGrupo" [(ngModel)]="identificador.idGrupo" name="idGrupo" required>
+                              <option *ngFor="let i of gruposAcesso" [ngValue]="i.idGrupoDispositivoAcesso">
+                              {{i.nome}}
+                              </option>
+                            </select>
+                            <div class="invalid-feedback invalid-feedback-Select">
+                              Seleção obrigatória.
+                            </div>
+                          </div>
+                        </c-col>
+                      </c-row>
+          
+                      <c-row>
+                        <c-col>
+                          <div class="mb-3">
+                            <label for="dataInicioPermissao" class="form-label">Início</label>
+                            <input type="date" class="form-control" [(ngModel)]="identificador.dataInicioPermissao" name="dataInicioPermissao" id="dataInicioPermissao" required>
+                            <div class="invalid-feedback"> 
+                              Preenchimento Obrigatório.
+                            </div>
+                          </div>
+                        </c-col>
+                        <c-col>
+                          <div class="mb-3">
+                            <label for="dataFimPermissao" class="form-label">Fim</label>
+                            <input type="date" class="form-control" [(ngModel)]="identificador.dataFimPermissao" name="dataFimPermissao" id="dataFimPermissao">
+                          </div>
+                        </c-col>
+                        
+                      </c-row>
+                  </c-col>
+
+                  <c-col md="7">
+                    <label for="idGrupo" class="form-label">Identificadores</label>
+                    <c-card>
+                      <c-card-header class="bg-light text-white" >
+                        <button cButton color="secondary" (click)="this.verificarIdentificadorExistente()" size="sm">Incluir</button>
+                      </c-card-header>
+                      <c-card-body>
+                        <c-row>
+                          <c-col style="overflow:scroll;">
+
+                            <table cTable>
+                              <thead cTableColor="dark">
+                              <tr>
+                              <th>Tipo</th>
+                              <th>Código</th>
+                              <th>Ativo</th>
+                              <th>Início</th>
+                              <th>Fim</th>
+                              <th>Grupo</th>                              
+                              </tr>
+                              </thead>
+                              <tbody>
+                                <tr role="button" *ngFor="let i of identificadores | paginate: { id: 'identificador', currentPage: pag, itemsPerPage: 3 }" (click)="editar(i);">
+                                  <th>{{aplicarDescricaoTipoIdentificacao(i.idTipoIdentificador!)}}</th>
+                                  <th>{{i.codigodeAcesso}}</th>
+                                  <th>
+                                    <input *ngIf="i.status" cFormCheckInput type="checkbox" checked />
+                                    <input *ngIf="!i.status" cFormCheckInput type="checkbox" />
+                                  </th>
+                                  <th>{{i.dataInicioPermissao | date:'dd/MM/yyyy'}}</th>
+                                  <th>{{i.dataFimPermissao | date:'dd/MM/yyyy'}}</th>
+                                  <th>{{aplicarDescricaoGrupoAcessos(i.idGrupo!)}}</th>
+                                </tr>
+                              </tbody>
+                              </table>
+
+                              <c-row class="text-center">
+                                <pagination-controls  id="identificador"
+                                (pageChange)="pag = $event"
+                                previousLabel="Anterior"
+                                nextLabel="Próximo"
+                                [autoHide]="true"
+                                [responsive]="true">
+                               </pagination-controls>
+                              </c-row>
+
+                          </c-col>
+                        </c-row>
+                      </c-card-body>
+                    </c-card>
+                  </c-col>
+                  </c-row>
+                </form>              
+        
+              </c-card-body>
+            </c-card>
+          </c-col>
+        </c-row>
+                
+        <br/>
+      </c-card-body>
+      <c-card-footer class="text-center border-dark">
+        <button cButton color="dark" [disabled]="identificador.idUsuario == undefined" (click)="gravar()" shape="rounded-pill">Gravar</button> &nbsp;&nbsp;
+        <button cButton color="dark" (click)="limparFormCompleto()" shape="rounded-pill">Cancelar</button>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!--Modal Dialogo-->
+<c-modal #ModalDialogo alignment="top" id="ModalDialogo" size="lg" [visible]="visibleModalDialogo">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Atenção !</h5>   
+  </c-modal-header>
+  <c-modal-body>
+    <div class="text-center">
+      <h5>{{modalSubTituloMensagem}}</h5>
+    </div>
+    <div class="text-center">
+      <span>{{modalCorpoMensagem}}</span>
+    </div>  
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalDialogo.id" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>
+
+<!--Modal pesquisar usuario-->
+<c-modal #ModalPerquisa alignment="top" id="ModalPerquisa" size="xl" [visible]="visibleModal">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Filtro de Usuários</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <c-card>
+      <c-card-header class="bg-dark text-white" >
+
+        <c-row class="align-items-center">         
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Matrícula</label>
+              <input type="text" class="form-control" [(ngModel)]="filtro.idUsuario" name="filtro.idUsuario">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" [(ngModel)]="filtro.nome" name="filtro.nome">         
+            </div>
+          </c-col>            
+          <c-col style="margin-top: 17px;">
+            <button cButton color="light" (click)="obterUsuarioPorFiltro()">Pesquisar</button>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body >
+        <c-row>
+          <c-col>
+            <table cTable hover>
+              <thead cTableColor="dark">
+              <tr>
+                <th scope="col">Empresa</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Nome</th>               
+              </tr>
+              </thead>
+              <tbody>
+                <tr role="button" *ngFor="let i of usuarios | paginate: { id: 'usuarios', currentPage: pag, itemsPerPage: 5 }" (click)="selecionarUsuarioTable(i);" [cModalToggle]="ModalPerquisa.id">
+                  <th>{{i.nomeEmpresa}}</th>
+                  <th>{{i.idUsuario}}</th>
+                  <th>{{i.nome}}</th>
+                </tr>
+              </tbody>
+              </table>
+
+              <c-row class="text-center">
+                <pagination-controls  id="usuarios"
+                (pageChange)="pag = $event"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                [autoHide]="true"
+                [responsive]="true">
+               </pagination-controls>
+              </c-row>
+
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalPerquisa.id" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>

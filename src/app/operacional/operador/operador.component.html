@@ -1,0 +1,324 @@
+<c-row>
+    <c-col>
+      <c-card class="border-top border-dark border-4">
+        <c-card-header class="text-center h5 bg-dark text-white" >Operador</c-card-header>
+        <c-card-body class="bg-gradient">
+  
+          <form class="operador" novalidate>
+            <c-row>
+              <c-col>
+                
+                <!--dados pessoais-->
+                <c-card class="border-dark">
+                  <c-card-body>
+                    <c-row style="margin-top: -1%; margin-bottom: -2%;">
+                      <c-col>
+                        <c-row>
+                          <c-col>
+                            <h5 class="card-title"><i>Dados do Operador</i></h5>
+                          </c-col>
+                        </c-row>
+
+                        <c-row>
+                          <!--identificacao-->
+                          <c-col>
+                            <label for="idUsuario" class="form-label">Identificação</label>
+                            <c-input-group class="mb-3">                        
+                              <input type="text" class="form-control" [maxlength]="30" [(ngModel)]="operador.chaveAcesso" name="idOperador" required autofocus />
+                              <button cButton color="dark" type="button" variant="outline" (click)="limparFormModal()" [cModalToggle]="ModalPerquisaOperador.id">
+                               <svg cIcon name="cil-zoom" size="ms"></svg>
+                              </button>
+                              <div class="invalid-feedback"> 
+                                Preenchimento Obrigatório.
+                              </div>
+                            </c-input-group>
+                          </c-col>
+
+                          <!--matricula-->
+                          <c-col>
+                            <label for="idUsuario" class="form-label">Matrícula Associada</label>
+                            <c-input-group class="mb-3">                        
+                              <input type="text" class="form-control" [maxlength]="11" [(ngModel)]="operador.idUsuario" name="idUsuario" disabled="true" required autofocus />
+                              <button cButton color="dark" type="button" variant="outline" (click)="limparFormModal()" [cModalToggle]="ModalPerquisa.id" 
+                                      *ngIf="operador.chaveAcesso != undefined && operador.chaveAcesso != '' ">
+                               <svg cIcon name="cil-zoom" size="ms"></svg>
+                              </button>
+                              <div class="invalid-feedback"> 
+                                Preenchimento Obrigatório.
+                              </div>
+                            </c-input-group>
+                          </c-col>
+                        </c-row>
+                        
+                      </c-col>    
+                    </c-row>
+
+                    <!--Nome-->
+                    <c-row>
+                      <c-col>
+                        <div class="mb-3">
+                          <label for="nome" class="form-label">Nome</label>
+                          <input type="text" class="form-control" [(ngModel)]="operador.nome" name="nome" disabled="true" required>
+                          <div class="invalid-feedback"> 
+                            Preenchimento Obrigatório.
+                          </div>
+                        </div>
+                      </c-col>
+                    </c-row>                    
+                    
+                    <!--email-->
+                    <c-row>
+                      <c-col>
+                        <div class="mb-3">
+                          <label for="documento" class="form-label">Email</label>
+                          <input type="email" class="form-control" [(ngModel)]="operador.email" name="email" required>
+                          <div class="invalid-feedback"> 
+                            Preenchimento Obrigatório.
+                          </div>
+                        </div>
+                      </c-col>
+                    </c-row> 
+    
+                  </c-card-body>              
+                </c-card>
+
+              </c-col>   
+              
+              
+              <c-col>
+                <!--Configurações de Acesso-->
+                <c-card class="border-dark">
+                  <c-card-body>
+                    <c-row style="margin-top: -1%; margin-bottom: -2%;">
+                      <c-col>
+                        <c-row>
+                          <c-col>
+                            <h5 class="card-title"><i>Configurações de Acesso</i></h5>
+                          </c-col>
+                        </c-row>
+
+                        <!--senha-->
+                        <c-row>
+                          <c-col md="5">
+                            <div class="mb-3">
+                              <label for="nome" class="form-label">Senha</label>
+                              <input type="password" class="form-control" [(ngModel)]="operador.senha" name="senha" [minlength]="6" required>
+                              <div class="invalid-feedback"> 
+                                O preenchimento é obrigatório e deve conter no mínimo 6 dígitos.
+                              </div>
+                            </div> 
+                          </c-col>
+
+                          <c-col md="6">
+                            <c-form-check class="mb-3" style="margin-top: 40px;">
+                              <input cFormCheckInput  [(ngModel)]="operador.trocarSenhaPrimeiroLogin" name="trocarSenhaPrimeiroLogin" id="trocarSenhaPrimeiroLogin" type="checkbox" />
+                              <label cFormCheckLabel for="trocarSenhaPrimeiroLogin">Trocar senha no primeiro login</label>
+                            </c-form-check>
+                          </c-col>
+                        </c-row>
+                      </c-col>    
+
+                    </c-row>                   
+    
+                    <!--dataInicio/dataFim-->
+                    <c-row>                      
+                      <c-col>
+                        <div class="mb-3">
+                          <label for="dataInicioOperacao" class="form-label">Início</label>
+                          <input type="date" class="form-control" [(ngModel)]="operador.dataInicioOperacao" name="dataInicioOperacao">
+                        </div>
+                      </c-col>
+                      <c-col>
+                        <div class="mb-3">
+                          <label for="dataFimOperacao" class="form-label">Fim</label>
+                          <input type="date" class="form-control" [(ngModel)]="operador.dataFimOperacao" name="dataFimOperacao">
+                        </div>
+                      </c-col>
+                    </c-row> 
+    
+                  </c-card-body>              
+                </c-card>
+              </c-col>
+            </c-row>
+          </form>
+          <br/>                
+        </c-card-body>
+        <c-card-footer class="text-center border-dark">
+          <button cButton color="dark" (click)="gravar()" shape="rounded-pill">Gravar</button> &nbsp;&nbsp;
+          <button cButton color="dark" (click)="limparForm()" shape="rounded-pill">Cancelar</button>
+        </c-card-footer>
+      </c-card>
+    </c-col>
+  </c-row>
+
+
+
+<!--Modal pesquisar Operador-->
+<c-modal #ModalPerquisaOperador alignment="top" id="ModalPerquisaOperador" size="xl" [visible]="visibleModalOperador">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Filtro de Operadores</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <c-card>
+      <c-card-header class="bg-dark text-white" >
+
+        <c-row class="align-items-center">         
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Identificação</label>
+              <input type="text" class="form-control" [maxlength]="30" [(ngModel)]="filtroOperador.idUsuario" name="filtroOperador.idUsuario">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" [(ngModel)]="filtroOperador.nome" name="filtroOperador.nome">         
+            </div>
+          </c-col>
+
+          <c-col style="margin-top: 17px;">
+            <button cButton color="light" (click)="obterPorFiltroOperador()">Pesquisar</button>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body >
+        <c-row>
+          <c-col>
+            <table cTable hover>
+              <thead cTableColor="dark">
+              <tr>              
+                <th scope="col">Identificação</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Nome</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr role="button" *ngFor="let i of operadores | paginate: { id: 'operadores', currentPage: pag, itemsPerPage: 5 }" (click)="selecionarOperadorTable(i);" [cModalToggle]="ModalPerquisaOperador.id">
+                  <th>{{i.idOperador}}</th>
+                  <th>{{i.idUsuario}}</th>
+                  <th>{{i.nome}}</th>
+                </tr>
+              </tbody>
+              </table>
+
+              <c-row class="text-center">
+                <pagination-controls  id="operadores"
+                (pageChange)="pag = $event"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                [autoHide]="true"
+                [responsive]="true">
+               </pagination-controls>
+              </c-row>
+
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalPerquisaOperador.id" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>
+
+
+<!--Modal pesquisar Usuario-->
+<c-modal #ModalPerquisa alignment="top" id="ModalPerquisa" size="xl" [visible]="visibleModal">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Filtro de Usuários</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <c-card>
+      <c-card-header class="bg-dark text-white" >
+
+        <c-row class="align-items-center">         
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Matrícula</label>
+              <input type="text" class="form-control" [maxlength]="11" [(ngModel)]="filtro.idUsuario" name="filtro.idUsuario">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" [(ngModel)]="filtro.nome" name="filtro.nome">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="idClassificacao" class="form-label">Classificação</label>
+              <select class="form-select mb-3"  [(ngModel)]="filtro.idClassificacao" name="filtro.idClassificacao">
+                <option  value="" selected>Selecione...</option>
+                <option *ngFor="let i of classificacoes" [ngValue]="i.idClassificacao">
+                  {{i.nome}}
+                </option>                   
+              </select>
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="idCategoria" class="form-label">Categoria</label>
+              <select class="form-select mb-3" [(ngModel)]="filtro.idCategoria" name="filtro.idCategoria" required>
+                <option  value="" selected>Selecione...</option>
+                <option *ngFor="let i of categorias" [ngValue]="i.idCategoria">
+                  {{i.nome}}
+                </option>
+              </select>
+            </div>
+          </c-col>
+          <c-col style="margin-top: 17px;">
+            <button cButton color="light" (click)="obterPorFiltro()">Pesquisar</button>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body >
+        <c-row>
+          <c-col>
+            <table cTable hover>
+              <thead cTableColor="dark">
+              <tr>
+                <th scope="col">Empresa</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Classificação</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Setor</th>
+                <th scope="col">Ramal</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr role="button" *ngFor="let i of usuarios | paginate: { id: 'usuarios', currentPage: pag, itemsPerPage: 5 }" (click)="selecionarUsuarioTable(i);" [cModalToggle]="ModalPerquisa.id">
+                  <th>{{i.nomeEmpresa}}</th>
+                  <th>{{i.idUsuario}}</th>
+                  <th>{{i.nome}}</th>
+                  <th>{{i.nomeClassificacao}}</th>
+                  <th>{{i.nomeCategoria}}</th>
+                  <th>{{i.nomeSetor}}</th>
+                  <th>{{i.nomeRamal}}</th>
+                </tr>
+              </tbody>
+              </table>
+
+              <c-row class="text-center">
+                <pagination-controls  id="usuarios"
+                (pageChange)="pag = $event"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                [autoHide]="true"
+                [responsive]="true">
+               </pagination-controls>
+              </c-row>
+
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalPerquisa.id" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>

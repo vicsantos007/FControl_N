@@ -1,0 +1,358 @@
+<c-row>
+  <c-col>
+    <c-card class="border-top border-dark border-4">
+      <c-card-header class="text-center h5 bg-dark text-white" >Usuário</c-card-header>
+      <c-card-body class="bg-gradient">
+
+        <form class="usuario" novalidate>
+          <c-row>
+            <c-col>
+              <!--dados pessoais-->
+              <c-card class="border-dark">
+                <c-card-body>
+                  <c-row style="margin-top: -1%; margin-bottom: -2%;">
+                    <c-col>
+                      <c-row>
+                        <c-col>
+                          <h5 class="card-title"><i>Dados Pessoais</i></h5>
+                        </c-col>
+                      </c-row>
+                      <c-row>
+                        <c-col>
+                          <label for="idUsuario" class="form-label">Matrícula</label>
+                          <c-input-group class="mb-3">                        
+                            <input type="text" class="form-control" [maxlength]="11" [(ngModel)]="usuario.idUsuario" name="idUsuario" required autofocus />
+                            <button cButton color="dark" type="button" variant="outline" (click)="limparFormModal()" [cModalToggle]="ModalPerquisa.id">
+                             <svg cIcon name="cil-zoom" size="ms"></svg>
+                            </button>
+                            <div class="invalid-feedback"> 
+                              Preenchimento Obrigatório.
+                            </div>
+                          </c-input-group>
+                        </c-col>
+                      </c-row>
+                    </c-col>           
+                    
+                    <c-col class="align-self-center text-center"  *ngIf="usuario.foto == null || usuario.foto == ''">
+                      <img src="./assets/img/avatars/perfilPadrao.png"
+                          [cModalToggle]="ModalFoto.id" 
+                          role="button" 
+                          style="border-radius: 1em; border: 1px solid #4f5d73; width: 128px; height: 128px; padding: 10px;"> 
+                    </c-col>
+
+                    <c-col class="align-self-center text-center" *ngIf="usuario.foto != null && usuario.foto != ''">
+                      <img [src]="'data:image/png;base64,' + usuario.foto" 
+                          [cModalToggle]="ModalFoto.id" 
+                          role="button" 
+                          style="border-radius: 1em; border: 1px solid #4f5d73; width: 128px; height: 128px; padding: 1px;"> 
+                    </c-col>
+
+                  </c-row>
+                  
+                  <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" [(ngModel)]="usuario.nome" name="nome" required>
+                    <div class="invalid-feedback"> 
+                      Preenchimento Obrigatório.
+                    </div>
+                  </div>
+  
+                  <c-row>
+                    <c-col>
+                      <div class="mb-3">
+                        <label for="documento" class="form-label">Documento</label>
+                        <input type="text" class="form-control" [(ngModel)]="usuario.documento" name="documento" required>
+                        <div class="invalid-feedback"> 
+                          Preenchimento Obrigatório.
+                        </div>
+                      </div>
+                    </c-col>
+                    <c-col>
+                      <div class="mb-3">
+                        <label for="idTipoDocumento" class="form-label">Orgão Emissor</label>
+                        <select class="form-select mb-3" [(ngModel)]="usuario.idTipoDocumento" name="idTipoDocumento" required>
+                        <option *ngFor="let i of documentos" [ngValue]="i.idTipoDocumento">
+                          {{i.nome}}
+                        </option>                        
+                        </select>
+                        <div class="invalid-feedback invalid-feedback-Select-duplo"> 
+                          Preenchimento Obrigatório.
+                        </div>
+                      </div>
+                    </c-col>
+                  </c-row> 
+  
+                </c-card-body>              
+              </c-card>
+            </c-col>
+  
+            <c-col>
+               <!--organização corporativa-->
+               <c-card  class="border-dark">
+                <c-card-body>
+                  <h5 class="card-title"><i>Organização Corporativa</i></h5>
+                  <div class="mb-3">
+                    <label for="idClassificacao" class="form-label">Classificação</label>
+                    <select class="form-select mb-3"  [(ngModel)]="usuario.idClassificacao" name="idClassificacao" required>
+                      <option *ngFor="let i of classificacoes" [ngValue]="i.idClassificacao">
+                        {{i.nome}}
+                      </option>                   
+                    </select>
+                    <div class="invalid-feedback invalid-feedback-Select">
+                      Seleção obrigatória.
+                  </div>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="idCategoria" class="form-label">Categoria</label>
+                    <select class="form-select mb-3" [(ngModel)]="usuario.idCategoria" name="idCategoria" required>
+                      <option *ngFor="let i of categorias" [ngValue]="i.idCategoria">
+                        {{i.nome}}
+                      </option>
+                    </select>
+                    <div class="invalid-feedback invalid-feedback-Select">
+                      Seleção obrigatória.
+                  </div>
+                  </div>
+  
+                  <c-row>
+                    <c-col>
+                      <div class="mb-3">
+                        <label for="idSetor" class="form-label">Setor</label>
+                        <select class="form-select mb-3" [(ngModel)]="usuario.idSetor" name="idSetor" required>
+                          <option *ngFor="let i of setores" [ngValue]="i.idSetor">
+                          {{i.nome}}
+                          </option>
+                        </select>
+                        <div class="invalid-feedback invalid-feedback-Select-duplo">
+                          Seleção obrigatória.
+                       </div>
+                      </div>
+                    </c-col>
+                    <c-col>
+                      <div class="mb-3">
+                        <label for="idRamal" class="form-label">Ramal</label>
+                        <select class="form-select mb-3" [(ngModel)]="usuario.idRamal" name="idRamal" required>
+                          <option *ngFor="let i of ramais" [ngValue]="i.idRamal">
+                          {{i.nome}}
+                          </option>
+                        </select>
+                        <div class="invalid-feedback invalid-feedback-Select-duplo">
+                          Seleção obrigatória.
+                       </div>
+                      </div>
+                    </c-col>
+                  </c-row>
+      
+                  
+      
+                  
+                </c-card-body>
+              </c-card>
+            </c-col>
+  
+            <c-col>
+              <!--configuração de acesso-->
+              <c-card  class="border-dark">
+                <c-card-body>
+                  <h5 class="card-title"><i>Configurações de Acesso</i></h5>
+                  <div class="mb-3">
+                    <label for="dataAdmissao" class="form-label">Admissão</label>
+                    <input type="date" class="form-control" [(ngModel)]="usuario.dataAdmissao" name="dataAdmissao" required>
+                    <div class="invalid-feedback"> 
+                      Preenchimento Obrigatório.
+                    </div>
+                  </div>
+      
+                  <div class="mb-3">
+                    <label for="dataDemissao" class="form-label">Demissão</label>
+                    <input type="date" class="form-control" [(ngModel)]="usuario.dataDemissao" name="dataDemissao">
+                  </div>
+  
+                  <div class="mb-3">
+                    <label for="idClassificacao" class="form-label">Período de Acesso</label>
+                    <select class="form-select mb-3" [(ngModel)]="usuario.idPeriodoAcessoPermitido" name="idPeriodoAcessoPermitido" required>
+                      <option *ngFor="let i of periodosdeAcesso" [ngValue]="i.idPeriodoAcessoPermitido">
+                      {{i.nome}}
+                      </option>
+                    </select>
+                    <div class="invalid-feedback invalid-feedback-Select">
+                      Seleção obrigatória.
+                  </div>
+                  
+                  </div>
+                </c-card-body>
+              </c-card>
+              
+            </c-col>          
+          </c-row>
+        </form>
+        <br/>                
+      </c-card-body>
+      <c-card-footer class="text-center border-dark">
+        <button cButton color="dark" (click)="gravar()" shape="rounded-pill">Gravar</button> &nbsp;&nbsp;
+        <button cButton color="dark" (click)="limparForm()" shape="rounded-pill">Cancelar</button>
+      </c-card-footer>
+    </c-card>
+  </c-col>
+</c-row>
+
+<!--Modal pesquisar usuario-->
+<c-modal #ModalPerquisa alignment="top" id="ModalPerquisa" size="xl" [visible]="visibleModal">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Filtro de Usuários</h5>
+  </c-modal-header>
+  <c-modal-body>
+    <c-card>
+      <c-card-header class="bg-dark text-white" >
+
+        <c-row class="align-items-center">         
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Matrícula</label>
+              <input type="text" class="form-control" [maxlength]="11" [(ngModel)]="filtro.idUsuario" name="filtro.idUsuario">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" [(ngModel)]="filtro.nome" name="filtro.nome">         
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="idClassificacao" class="form-label">Classificação</label>
+              <select class="form-select mb-3"  [(ngModel)]="filtro.idClassificacao" name="filtro.idClassificacao">
+                <option  value="" selected>Selecione...</option>
+                <option *ngFor="let i of classificacoes" [ngValue]="i.idClassificacao">
+                  {{i.nome}}
+                </option>                   
+              </select>
+            </div>
+          </c-col>
+          <c-col>
+            <div class="mb-3">
+              <label for="idCategoria" class="form-label">Categoria</label>
+              <select class="form-select mb-3" [(ngModel)]="filtro.idCategoria" name="filtro.idCategoria" required>
+                <option  value="" selected>Selecione...</option>
+                <option *ngFor="let i of categorias" [ngValue]="i.idCategoria">
+                  {{i.nome}}
+                </option>
+              </select>
+            </div>
+          </c-col>
+          <c-col style="margin-top: 17px;">
+            <button cButton color="light" (click)="obterPorFiltro()">Pesquisar</button>
+          </c-col>
+        </c-row>
+      </c-card-header>
+      <c-card-body >
+        <c-row>
+          <c-col>
+            <table cTable hover>
+              <thead cTableColor="dark">
+              <tr>
+                <th scope="col">Empresa</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Classificação</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Setor</th>
+                <th scope="col">Ramal</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr role="button" *ngFor="let i of usuarios | paginate: { id: 'usuarios', currentPage: pag, itemsPerPage: 5 }" (click)="selecionarUsuarioTable(i);" [cModalToggle]="ModalPerquisa.id">
+                  <th>{{i.nomeEmpresa}}</th>
+                  <th>{{i.idUsuario}}</th>
+                  <th>{{i.nome}}</th>
+                  <th>{{i.nomeClassificacao}}</th>
+                  <th>{{i.nomeCategoria}}</th>
+                  <th>{{i.nomeSetor}}</th>
+                  <th>{{i.nomeRamal}}</th>
+                </tr>
+              </tbody>
+              </table>
+
+              <c-row class="text-center">
+                <pagination-controls  id="usuarios"
+                (pageChange)="pag = $event"
+                previousLabel="Anterior"
+                nextLabel="Próximo"
+                [autoHide]="true"
+                [responsive]="true">
+               </pagination-controls>
+              </c-row>
+
+          </c-col>
+        </c-row>
+      </c-card-body>
+    </c-card>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalPerquisa.id" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>
+
+<!--Modal Dialogo-->
+<c-modal #ModalDialogo alignment="top" id="ModalDialogo" size="lg" [visible]="visibleModalDialogo">
+  <c-modal-header class="bg-dark text-white">
+    <h5 cModalTitle>Atenção !</h5>
+  </c-modal-header>
+  <c-modal-body class="text-center">
+    <h4>Gostaria de acessar o cadastro de identificador?</h4>
+  </c-modal-body>
+  <c-modal-footer>
+    <button (click)="abrirIdentificador()"cButton color="dark">
+      Sim
+    </button>
+    <button [cModalToggle]="ModalDialogo.id" cButton color="dark">
+      Não
+    </button>
+  </c-modal-footer>
+</c-modal>
+
+<!--Modal Foto-->
+<c-modal #ModalFoto alignment="top" id="ModalFoto" size="lg" [visible]="visibleModalFoto">
+  <c-modal-header>
+    <h5 cModalTitle>Foto</h5>
+    <button [cModalToggle]="ModalFoto.id" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <c-card>
+      <c-card-header class="bg-dark text-white">
+        <input type="file" accept="image/*" (change)="fileChangeEvent($event)" role="button" />
+      </c-card-header>
+      <c-card-body >        
+        <c-row>
+          <c-col>
+            <image-cropper
+            style="width: 412px; height: 412px;"
+            [imageChangedEvent]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="4 / 4"
+            format="png"
+            [resizeToWidth]="200"
+            (imageCropped)="imageCropped($event)"        
+            (cropperReady)="cropperReady()"
+            (loadImageFailed)="loadImageFailed()">
+          </image-cropper>
+          </c-col>
+
+          <c-col>
+            <img [src]="croppedImage" />
+          </c-col>
+
+        </c-row>
+        
+      </c-card-body>
+    </c-card>
+  </c-modal-body>
+  <c-modal-footer>
+    <button [cModalToggle]="ModalFoto.id" (click)="limparFormModalFoto()" cButton color="secondary">
+      Sair
+    </button>
+  </c-modal-footer>
+</c-modal>

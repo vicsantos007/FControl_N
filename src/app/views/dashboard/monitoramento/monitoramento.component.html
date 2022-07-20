@@ -1,0 +1,81 @@
+<c-row>
+  <c-col xs>
+    <c-card class="mb-4">
+      <h4> ** {{dataHoraDisplay}} **</h4>
+      <c-card-header>Monitoramento de Acessos</c-card-header>     
+      <c-card-body>
+        <table
+          [hover]="true"
+          [responsive]="true"
+          [striped]="true"
+          align="middle"
+          cTable
+          class="mb-0 border"
+        >
+          <thead cTableColor="light">
+          <tr>
+            <th class="text-center">
+              <svg cIcon name="cilPeople"></svg>
+            </th>
+            <th>Usuário</th>
+            <th class="text-center">Local</th>
+            <th>Ocorrência</th>
+            <th>Data</th>
+            <th class="text-center">Hora</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of monitoramentoAcessos; index as i">
+
+            <td class="text-center" *ngIf="user.fotoUsuario != ''">
+              <c-avatar
+                size="md"
+                src="data:image/png;base64,{{user.fotoUsuario}}"
+                status="Ativo"
+              ></c-avatar>
+            </td>
+
+            <td class="text-center" *ngIf="user.fotoUsuario == ''">
+              <c-avatar
+                size="md"
+                src="../../../../assets/img/avatars/perfilPadrao.png"
+                status="Ativo"
+              ></c-avatar>
+            </td>
+
+            <td>
+              <div>{{ user.nomeUsuario }}</div>
+              <div class="small text-medium-emphasis">
+                Matrícula: {{ user.idUsuario }}  |  Identificador: {{ user.codigoIdentificador }}
+              </div>
+            </td>
+            
+            <td class="text-center">
+              {{ user.nomeDispositivo  }}
+            </td>
+
+            <td>
+              <div class="clearfix">
+                <div>
+                  <small class="text-medium-emphasis">
+                    {{ user.nomeEvento }}
+                  </small>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              {{ user.data | date:'dd/MM/yyyy' }}
+            </td>
+
+            <td class="text-center">             
+              {{ user.hora }}
+            </td>
+
+          </tr>
+          </tbody>
+        </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
