@@ -51,23 +51,24 @@ connection = new signalR.HubConnectionBuilder()
     if(!this.verificarToken()){
       this.router.navigate(['/login']);
     }else{
+      this.monitoramentoAcesso.idEmpresa = +window.localStorage.getItem('idEmpresaOP')!;
       this.monitoramentoAcesso.idUsuario = window.localStorage.getItem('idUsuarioOP')!;
       this.monitoramentoAcesso.qntTransacoes = +window.localStorage.getItem('qntTransacoes')!;
-      this.monitoramentoAcesso.idTransacoes = +window.localStorage.getItem('idTransacoes')!;
+      this.monitoramentoAcesso.idTransacoes = +window.localStorage.getItem('idTransacoes')!;      
     }
 
     this.hubConnection = this.signalRService.startConnection();
 
     setTimeout(() => {
-      this. askServerListener();
-      this.signalRService.askServer();
+      this.askServerListener();
+      this.signalRService.askServer(this.monitoramentoAcesso.idEmpresa, this.monitoramentoAcesso.idUsuario, 1);
     }, 2000);
    
   }     
 
   askServerListener() {
     this.hubConnection.on("monitoramentoResp", (someText: any) => {
-        this.dataHoraDisplay = someText;
+        this.monitoramentoAcessos = this.fila(this.monitoramentoAcessos, someText);
     })
 }
 
@@ -78,7 +79,7 @@ connection = new signalR.HubConnectionBuilder()
   obterTransacoes(){    
     this.monitoramentoAcessoService.obterPorFiltro(this.monitoramentoAcesso).subscribe((_monitoramentoAcessos: MonitoramentoAcessoModel[]) => {
       if(_monitoramentoAcessos.length > 0){
-        this.monitoramentoAcessos = this.fila(this.monitoramentoAcessos, _monitoramentoAcessos);
+        this.monitoramentoAcessos = this.fila(this.monitoramentoAcessos, _monitoramentoAcessos[0]);
       }
             
     }, (erro: any) => {
@@ -97,17 +98,13 @@ connection = new signalR.HubConnectionBuilder()
   }
 
   //controle de fila
-  fila(Lista: MonitoramentoAcessoModel[]=[], novoItem: MonitoramentoAcessoModel[]=[]){
+  fila(Lista: MonitoramentoAcessoModel[]=[], novoItem: MonitoramentoAcessoModel){
     
-    if(novoItem.length > 0){
-        for (let i = 0; i < novoItem.length; i++) {
-          Lista.push(novoItem[i]);
-
-          if(Lista.length > this.tamanhoLimiteLista){
-            Lista.shift();
-          }
-          
-        }
+    if(novoItem != undefined){
+      Lista.push(novoItem);
+      if(Lista.length > this.tamanhoLimiteLista){
+        Lista.shift();
+      }
     }
     return Lista;
   }

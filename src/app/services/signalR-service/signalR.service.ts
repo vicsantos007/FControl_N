@@ -28,8 +28,8 @@ export class SignalrService {
         return this.hubConnection;
     }
 
-    askServer() {
-        this.hubConnection.invoke("receberMonitoramento", "hi", "00000000001")
+    askServer(idEmpresaOP: number = 0, idUsuarioOP: string = "", idDominioDispositivoOP: number = 0) {
+        this.hubConnection.invoke("receberMonitoramento", idEmpresaOP, idUsuarioOP, idDominioDispositivoOP)
             .catch(err => console.error(err));
   }
 }
